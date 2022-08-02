@@ -1,4 +1,7 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {Component, useEffect, useState } from "react";
+import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
+import {Route, Router, Routes} from "react-router";
+import { Link } from 'react-router-dom';
 
 function Board() {
     const [boards, setBoard] = useState([]);
@@ -17,15 +20,6 @@ function Board() {
 
     return (
         <React.Fragment>
-            <head>
-                <meta charSet="UTF-8" />
-                    <meta name="viewport"
-                          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-                        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-                            <title>게시판 메인</title>
-                            <link rel="stylesheet" href="/Users/kso0654/ReactProject/boarduk/src/css/board.css" />
-            </head>
-            <body>
             <section className="notice">
                 <div className="page-title">
                     <div className="container">
@@ -52,36 +46,32 @@ function Board() {
                             <tr>
                                 <th scope="col" className="th-num">번호</th>
                                 <th scope="col" className="th-title">제목</th>
+                                <th scope="col" className="th-hit">조회수</th>
                                 <th scope="col" className="th-date">등록일</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>3</td>
-                                <th>
-                                    <a href="#!">[공지사항] 개인정보 처리방침 변경안내처리방침</a>
-                                    <p>테스트</p>
-                                </th>
-                                <td>2017.07.13</td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-                                <td>2017.06.15</td>
-                            </tr>
-
-                            <tr>
-                                <td>1</td>
-                                <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-                                <td>2017.06.15</td>
-                            </tr>
+                            {boards.map((board) => {
+                                return (
+                                    <tr key={board.boardNo}>
+                                        <td className="board-no" key={board.boardNo}>{board.boardNo}</td>
+                                        <td className="board-title" key={board.boardTitle}>
+                                            <Link to={{
+                                                pathname: `/board/${board.boardNo}`
+                                                }}>
+                                            {board.boardTitle}
+                                            </Link>
+                                        </td>
+                                        <td className="board-views" key={board.boardViews}>{board.boardViews}</td>
+                                        <td className="board-insert-time" key={board.insertTimestamp}>{board.insertTimestamp}</td>
+                                    </tr>
+                                );
+                            })}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
-            </body>
         </React.Fragment>
         // <div className="board-container">
         //     {boards.map((board) => {

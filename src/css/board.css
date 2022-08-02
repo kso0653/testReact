@@ -75,6 +75,14 @@ section.notice {
     text-align: center;
 }
 
+.board-table .th-title {
+    width: 200px;
+}
+
+.board-table .th-hit {
+    width: 200px;
+}
+
 .board-table .th-date {
     width: 200px;
 }
