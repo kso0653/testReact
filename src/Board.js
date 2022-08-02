@@ -5,6 +5,34 @@ import { Link } from 'react-router-dom';
 
 function Board() {
     const [boards, setBoard] = useState([]);
+    const [hold, setHold] = useState([]);
+    const [search, setSearch] = useState({
+        title : ""
+    });
+
+    const onChange = (event) => {
+        console.log("event ===>", event.target);
+        const { name, value } = event.target;
+
+        setSearch({
+            ...search,
+            [name]: value,
+        });
+    };
+
+    const onSearch = () => {
+        console.log("검색어 :", search.title);
+        fetch(`/api/board/search/${search.title}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setBoard(data);
+                console.log('onSearch fetch 성공');
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
 
     useEffect(() => {
         fetch('/api/board')
@@ -32,8 +60,15 @@ function Board() {
                             <form action="">
                                 <div className="search-wrap">
                                     <label htmlFor="search" className="blind">공지사항 내용 검색</label>
-                                    <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="" />
-                                        <button type="submit" className="btn btn-dark">검색</button>
+                                    <input
+                                        id="search"
+                                        type="search"
+                                        name="title"
+                                        placeholder="제목을 입력해주세요."
+                                        value={search.title}
+                                        onChange={onChange}
+                                    />
+                                    <button onClick={onSearch} type="submit" className="btn btn-dark">검색</button>
                                 </div>
                             </form>
                         </div>
@@ -90,4 +125,4 @@ function Board() {
     );
 }
 
-export default Board;
+export default React.memo(Board);
