@@ -35,6 +35,21 @@ function Board() {
             });
     }
 
+    const onDelete = () => {
+        console.log("<=== 삭제");
+        fetch(`/api/board/${boards.boardNo}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // setBoard(data);
+                console.log(boards);
+                console.log('onDelete fetch 성공!');
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
     useEffect(() => {
         fetch('/api/board')
             .then((response) => response.json())
@@ -101,7 +116,7 @@ function Board() {
                                         <td className="board-views" key={board.boardViews}>{board.boardViews}</td>
                                         <td className="board-insert-time" key={board.insertTimestamp}>{board.insertTimestamp}</td>
                                         <td className="board-delete">
-                                            <button>삭제</button>
+                                            <button onClick={onDelete}>삭제</button>
                                         </td>
                                     </tr>
                                 );
