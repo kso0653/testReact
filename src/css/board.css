@@ -87,6 +87,10 @@ section.notice {
     width: 200px;
 }
 
+.board-table .th-delete {
+    width: 100px;
+}
+
 .board-table th, .board-table td {
     padding: 14px 0;
 }
