@@ -5,6 +5,50 @@ import { Link } from 'react-router-dom';
 
 function Board() {
     const [boards, setBoard] = useState([]);
+    const [hold, setHold] = useState([]);
+    const [search, setSearch] = useState({
+        title : ""
+    });
+
+    const onChange = (event) => {
+        console.log("event ===>", event.target);
+        const { name, value } = event.target;
+
+        setSearch({
+            ...search,
+            [name]: value,
+        });
+    };
+
+    const onSearch = () => {
+        console.log("검색어 :", search.title);
+        fetch(`/api/board/search/${search.title}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setBoard(data);
+                console.log(boards);
+                console.log('onSearch fetch 성공!');
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onDelete = () => {
+        console.log("<=== 삭제");
+        fetch(`/api/board/${boards.boardNo}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // setBoard(data);
+                console.log(boards);
+                console.log('onDelete fetch 성공!');
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
 
     useEffect(() => {
         fetch('/api/board')
@@ -12,6 +56,7 @@ function Board() {
             .then((data) => {
                 console.log(data);
                 setBoard(data);
+                console.log(boards);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -29,13 +74,18 @@ function Board() {
                 <div id="board-search">
                     <div className="container">
                         <div className="search-window">
-                            <form action="">
-                                <div className="search-wrap">
-                                    <label htmlFor="search" className="blind">공지사항 내용 검색</label>
-                                    <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="" />
-                                        <button type="submit" className="btn btn-dark">검색</button>
-                                </div>
-                            </form>
+                            <div className="search-wrap">
+                                <label htmlFor="search" className="blind">공지사항 내용 검색</label>
+                                <input
+                                    id="search"
+                                    type="text"
+                                    name="title"
+                                    placeholder="제목을 입력해주세요."
+                                    value={search.title}
+                                    onChange={onChange}
+                                />
+                                <button onClick={onSearch} className="btn btn-dark">검색</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,6 +98,7 @@ function Board() {
                                 <th scope="col" className="th-title">제목</th>
                                 <th scope="col" className="th-hit">조회수</th>
                                 <th scope="col" className="th-date">등록일</th>
+                                <th scope="col" className="th-delete">삭제</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -64,11 +115,17 @@ function Board() {
                                         </td>
                                         <td className="board-views" key={board.boardViews}>{board.boardViews}</td>
                                         <td className="board-insert-time" key={board.insertTimestamp}>{board.insertTimestamp}</td>
+                                        <td className="board-delete">
+                                            <button onClick={onDelete}>삭제</button>
+                                        </td>
                                     </tr>
                                 );
                             })}
                             </tbody>
                         </table>
+                        <div className="button">
+                            <button className="btn btn-dark">등록</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -90,4 +147,4 @@ function Board() {
     );
 }
 
-export default Board;
+export default React.memo(Board);
