@@ -1,11 +1,11 @@
 import React, {Component, useEffect, useState } from "react";
-import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
+// import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
+import "C:/Users/study/testReact/src/css/board.css";
 import {Route, Router, Routes} from "react-router";
 import { Link } from 'react-router-dom';
 
 function Board() {
     const [boards, setBoard] = useState([]);
-    const [hold, setHold] = useState([]);
     const [search, setSearch] = useState({
         title : ""
     });
@@ -35,19 +35,19 @@ function Board() {
             });
     }
 
-    const onDelete = () => {
-        console.log("<=== 삭제");
-        fetch(`/api/board/${boards.boardNo}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                // setBoard(data);
-                console.log(boards);
-                console.log('onDelete fetch 성공!');
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+    const onDelete = (boardNo) => {
+        if ( window.confirm("해당 게시글을 삭제하시겠습니까?") ) {
+            alert("삭제되었습니다.");
+            console.log(boardNo, "<=== 삭제");
+            fetch('/api/board/' + boardNo, {
+                method:"DELETE"})
+                .catch((err) => {
+                    console.log(err.message);
+                });
+            window.location.reload();
+        } else {
+            alert("취소 되었습니다.");
+        }
     }
 
     useEffect(() => {
@@ -56,7 +56,6 @@ function Board() {
             .then((data) => {
                 console.log(data);
                 setBoard(data);
-                console.log(boards);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -116,7 +115,12 @@ function Board() {
                                         <td className="board-views" key={board.boardViews}>{board.boardViews}</td>
                                         <td className="board-insert-time" key={board.insertTimestamp}>{board.insertTimestamp}</td>
                                         <td className="board-delete">
-                                            <button onClick={onDelete}>삭제</button>
+                                            <button
+                                                className="btn btn-dark"
+                                                key={board.boardNo}
+                                                onClick={() => onDelete(board.boardNo)}>
+                                                삭제
+                                            </button>
                                         </td>
                                     </tr>
                                 );
@@ -130,20 +134,6 @@ function Board() {
                 </div>
             </section>
         </React.Fragment>
-        // <div className="board-container">
-        //     {boards.map((board) => {
-        //         return (
-        //             <div className="board-no" key={board.boardNo}>
-        //                 <h2 className="board-title">{board.boardTitle}</h2>
-        //                 <p className="board-views">{board.boardViews}</p>
-        //                 <p className="board-insert-time">{board.insertTimestamp}</p>
-        //                 <div className="button">
-        //                     <div className="delete-btn">Delete</div>
-        //                 </div>
-        //             </div>
-        //         );
-        //     })}
-        // </div>
     );
 }
 
