@@ -9,7 +9,7 @@ function App() {
             <Board />
             <Route>
                 <Route path="/" element={<Board />}></Route>
-                {/*<Route path="/board/*" element={<BoardDetail />}></Route>*/}
+                <Route path="/board/" element={<BoardDetail />}></Route>
                 {/*<Route path="*" element={<NotFound />}></Route>*/}
             </Route>
         </BrowserRouter>
