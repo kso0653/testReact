@@ -1,12 +1,13 @@
 import React, {Component, useEffect, useState } from "react";
 import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
 // import "C:/Users/study/testReact/src/css/board.css";
-import {Route, Router, Routes} from "react-router";
+import {Route, Router, Routes, useHistory } from "react-router";
 import { Link } from 'react-router-dom';
 import board from "./Board";
 
 function BoardDetail({match}) {
     const [board, setBoard] = useState({});
+    let history = useHistory();
 
     useEffect(() => {
         // fetch(`/api/board/${boards.boardNo}`)
@@ -22,6 +23,21 @@ function BoardDetail({match}) {
                 console.log(err.message);
             })
     }, []);
+
+    const onDelete = () => {
+        if ( window.confirm("해당 게시글을 삭제하시겠습니까?") ) {
+            alert("삭제되었습니다.");
+            console.log(match.params.boardNo, "<=== 삭제");
+            fetch('/api/board/' + match.params.boardNo, {
+                method:"DELETE"})
+                .catch((err) => {
+                    console.log(err.message);
+                });
+            history.push("/");
+        } else {
+            alert("취소 되었습니다.");
+        }
+    }
 
     return (
       <React.Fragment>
@@ -45,6 +61,13 @@ function BoardDetail({match}) {
                                       : {board.boardEditor}</div>
                                   <div className="board-updated-timestamp" key={board.updatedTimestamp}>수정일
                                       : {board.updatedTimestamp}</div>
+                                  <button>수정</button>
+                                  <button
+                                      className="btn btn-dark"
+                                      key={board.boardNo}
+                                      onClick={() => onDelete(board.boardNo)}>
+                                      삭제
+                                  </button>
                               </div>
                           }
                       </div>
