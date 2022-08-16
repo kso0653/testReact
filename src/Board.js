@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState } from "react";
-// import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
-import "C:/Users/study/testReact/src/css/board.css";
+import "/Users/kso0654/ReactProject/boarduk/src/css/board.css";
+// import "C:/Users/study/testReact/src/css/board.css";
 import {Route, Router, Routes} from "react-router";
 import { Link } from 'react-router-dom';
 
@@ -107,7 +107,7 @@ function Board() {
                                         <td className="board-no" key={board.boardNo}>{board.boardNo}</td>
                                         <td className="board-title" key={board.boardTitle}>
                                             <Link to={{
-                                                pathname: `/board/${board.boardNo}`
+                                                pathname: `/board/boardDetail/${board.boardNo}`
                                                 }}>
                                             {board.boardTitle}
                                             </Link>
